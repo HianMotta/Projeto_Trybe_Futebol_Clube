@@ -29,6 +29,10 @@ User.init(
       type: STRING,
       allowNull: false,
     },
+    password: {
+      type: STRING,
+      allowNull: false,
+    },
   },
   {
     sequelize: db,
