@@ -39,4 +39,12 @@ export default class MatchService {
     );
     if (affectedCount === 0) throw new ApiError(404, 'Match not found');
   }
+
+  public async updateMatch(matchId:string, homeGoals: number, awayGoals: number) {
+    const [affectedCount] = await this._matchModel.update(
+      { homeTeamGoals: homeGoals, awayTeamGoals: awayGoals },
+      { where: { id: matchId } },
+    );
+    if (affectedCount === 0) throw new ApiError(404, 'Match not found');
+  }
 }
