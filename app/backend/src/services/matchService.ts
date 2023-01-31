@@ -1,6 +1,7 @@
 import ApiError from '../error/apiError';
 import Team from '../database/models/Team';
 import Match from '../database/models/Match';
+import IMatch from '../interfaces/IMatch';
 
 export default class MatchService {
   constructor(private _matchModel = Match) {}
@@ -18,6 +19,17 @@ export default class MatchService {
       return matches.filter((m) => m.dataValues.inProgress === false);
     }
     return matches;
+  }
+
+  public async createMatch(match: IMatch): Promise<IMatch> {
+    const createdMatch = await this._matchModel.create({
+      homeTeamId: match.homeTeamId,
+      homeTeamGoals: match.homeTeamGoals,
+      awayTeamId: match.awayTeamId,
+      awayTeamGoals: match.awayTeamGoals,
+      inProgress: true,
+    });
+    return createdMatch;
   }
 
   public async finishMatch(matchId:string) {
