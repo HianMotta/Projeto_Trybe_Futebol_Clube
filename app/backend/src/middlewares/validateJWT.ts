@@ -4,7 +4,7 @@ import ApiError from '../error/apiError';
 
 const jwt = new JWT();
 
-const validateJWT = (req: Request, res: Response, next: NextFunction) => {
+const validateJWT = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
   if (!authorization) throw new ApiError(401, 'Token not found');
   const payload = jwt.validateToken(authorization);

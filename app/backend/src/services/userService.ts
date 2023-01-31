@@ -26,4 +26,10 @@ export default class UserService {
     const token = jwt.createToken(payload);
     return token;
   }
+
+  public async getUserRole(email: string): Promise<string> {
+    const user = await this._userModel.findOne({ where: { email } });
+    if (!user) throw new ApiError(401, 'Token not found');
+    return user.role;
+  }
 }

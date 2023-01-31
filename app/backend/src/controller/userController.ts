@@ -8,4 +8,10 @@ const login = async (req: Request, res: Response) => {
   return res.status(200).json({ token: userToken });
 };
 
-export default login;
+const getUserRole = async (req: Request, res: Response) => {
+  const { email } = req.body.user;
+  const userRole = await userService.getUserRole(email);
+  return res.status(200).json({ role: userRole });
+};
+
+export { login, getUserRole };
