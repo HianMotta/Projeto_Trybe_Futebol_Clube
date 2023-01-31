@@ -8,4 +8,10 @@ const getTeams = async (_req: Request, res: Response) => {
   return res.status(200).json(teams);
 };
 
-export default getTeams;
+const getTeamById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const team = await teamService.getTeamById(id);
+  return res.status(200).json(team);
+};
+
+export { getTeams, getTeamById };
