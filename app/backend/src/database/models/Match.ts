@@ -31,7 +31,7 @@ Match.init(
       type: INTEGER,
       allowNull: false,
     },
-    awayTeamsGoals: {
+    awayTeamGoals: {
       type: INTEGER,
       allowNull: false,
     },
@@ -54,4 +54,4 @@ Team.hasMany(Match, { foreignKey: 'awayTeamId', as: 'awayTeam' });
 Match.belongsTo(Team, { foreignKey: 'homeTeamId', as: 'homeTeam' });
 Match.belongsTo(Team, { foreignKey: 'awayTeamId', as: 'awayTeam' });
 
-export default Team;
+export default Match;
