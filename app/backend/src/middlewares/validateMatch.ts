@@ -6,13 +6,14 @@ import JWT from '../jwt/jwtUtils';
 const jwt = new JWT();
 
 const validateMatch = async (req: Request, _res: Response, next: NextFunction) => {
-  const { homeTeam, awayTeam } = req.body;
+  const { homeTeamId, awayTeamId } = req.body;
   const { authorization } = req.headers;
-  if (homeTeam === awayTeam) {
+  if (homeTeamId === awayTeamId) {
     throw new ApiError(422, 'It is not possible to create a match with two equal teams');
   }
 
-  const teams = await Team.findAll({ where: { teamName: [homeTeam, awayTeam] } });
+  const teams = await Team.findAll({ where: { id: [homeTeamId, awayTeamId] } });
+  console.log(teams);
   if (teams.length < 2) throw new ApiError(404, 'There is no team with such id!');
 
   try {
