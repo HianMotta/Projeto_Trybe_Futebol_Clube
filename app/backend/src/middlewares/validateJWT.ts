@@ -6,11 +6,15 @@ const jwt = new JWT();
 
 const validateJWT = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
-  if (!authorization) throw new ApiError(401, 'Token not found');
-  const payload = jwt.validateToken(authorization);
-  req.body.user = payload;
+  try {
+    if (!authorization) throw new ApiError(401, 'Token not found');
+    const payload = jwt.validateToken(authorization);
+    req.body.user = payload;
 
-  next();
+    next();
+  } catch (error) {
+    throw new ApiError(401, 'Token must be a valid token');
+  }
 };
 
 export default validateJWT;
