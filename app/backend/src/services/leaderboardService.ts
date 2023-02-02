@@ -19,12 +19,12 @@ export default class LeaderboardService {
 
   private async getTeamStats(team: ITeam, path: 'home' | 'away') {
     const teamMatches = await this._matchModel.findAll({
-      where: { [`${path}TeamId`]: team.id },
+      where: { [`${path}TeamId`]: team.id, inProgress: false },
     });
 
     const matchesResults = LeaderboardService.getMatchesResults(teamMatches, path);
     const goalsResults = LeaderboardService.getGoals(teamMatches, path);
-    const points = (matchesResults.totalVictories * 3) + (matchesResults.totalDraws * 1);
+    const points = (matchesResults.totalVictories * 3) + matchesResults.totalDraws;
     const teamEfficiency = ((points / (teamMatches.length * 3)) * 100).toFixed(2);
     return {
       name: team.teamName,
@@ -45,8 +45,8 @@ export default class LeaderboardService {
     };
     matches.forEach((m) => {
       if (m[`${path}TeamGoals`] > m[`${enemy}TeamGoals`]) result.totalVictories += 1;
-      if (m[`${path}TeamGoals`] < m[`${enemy}TeamGoals`]) result.totalLosses += 1;
       if (m[`${path}TeamGoals`] === m[`${enemy}TeamGoals`]) result.totalDraws += 1;
+      if (m[`${path}TeamGoals`] < m[`${enemy}TeamGoals`]) result.totalLosses += 1;
     });
     return result;
   }
@@ -67,7 +67,9 @@ export default class LeaderboardService {
   }
 
   private static ordenateRank(leaderboard: Array<ILeaderboard>) {
-    return leaderboard.sort((a, b) => b.totalVictories - a.totalVictories
+    return leaderboard.sort((a, b) =>
+      b.totalPoints - a.totalPoints
+      || b.totalVictories - a.totalVictories
       || b.goalsBalance - a.goalsBalance
       || b.goalsFavor - a.goalsFavor
       || a.goalsOwn - b.goalsOwn);
