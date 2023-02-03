@@ -13,4 +13,9 @@ const getAwayLeaderboard = async (_req: Request, res: Response) => {
   return res.status(200).json(leaderboard);
 };
 
-export { getHomeLeaderboard, getAwayLeaderboard };
+const getAllTeamsLeaderboard = async (_req: Request, res: Response) => {
+  const leaderboard = await leaderboardService.getAllTeamsLeaderboard();
+  return res.status(200).json(leaderboard);
+};
+
+export { getHomeLeaderboard, getAwayLeaderboard, getAllTeamsLeaderboard };
